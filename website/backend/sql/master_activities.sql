@@ -1,0 +1,6 @@
+-- Global Activity Bank uses the existing `activity_library` table (starter pack).
+-- Columns: title, instructions, domain (Cognitive | Motor | Social | Language),
+--          min_age_months, max_age_months.
+--
+-- No separate master_activities table is required. Run activity_library_assignments.sql
+-- if activity_library does not exist yet.

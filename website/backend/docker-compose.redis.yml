@@ -1,0 +1,14 @@
+# Local Redis for OTP storage and distributed rate limiting (development).
+# Start: docker compose -f docker-compose.redis.yml up -d
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - noumou_redis_data:/data
+    command: ['redis-server', '--save', '60', '1', '--loglevel', 'warning']
+
+volumes:
+  noumou_redis_data:

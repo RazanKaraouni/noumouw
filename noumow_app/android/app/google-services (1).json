@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "562088958220",
+    "project_id": "senior-5ce39",
+    "storage_bucket": "senior-5ce39.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562088958220:android:ccc0b1629dcf80a1951129",
+        "android_client_info": {
+          "package_name": "com.example.noumow_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaR8gQMKhRqos8fgzJXvfxwffeLRPnDK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "noumouw_parent (Chrome, repo root workspace)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "cwd": "${workspaceFolder}",
+      "args": ["--dart-define-from-file=dart_defines.json"]
+    },
+    {
+      "name": "noumouw_parent (Chrome, admin_app is workspace)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "cwd": "${workspaceFolder}",
+      "args": ["--dart-define-from-file=dart_defines.json"]
+    }
+  ]
+}

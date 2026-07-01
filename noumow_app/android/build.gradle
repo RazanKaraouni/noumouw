@@ -1,0 +1,89 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects { subproject ->
+    subproject.plugins.withId('com.android.library') {
+        subproject.android {
+            compileSdkVersion 36
+            ndkVersion "27.0.12077973"
+            buildFeatures {
+                buildConfig true
+            }
+            if (namespace == null) {
+                def manifest = subproject.file('src/main/AndroidManifest.xml')
+                if (manifest.exists()) {
+                    namespace new XmlParser().parse(manifest).attribute('package')
+                }
+            }
+        }
+    }
+}
+// Pin NDK 27 (on disk); Flutter 3.44 defaults to 28.x which may fail to install when C: is low on space.
+subprojects { subproject ->
+    subproject.afterEvaluate {
+        def androidExt = subproject.extensions.findByName("android")
+        if (androidExt != null) {
+            if (androidExt.hasProperty("ndkVersion")) {
+                androidExt.ndkVersion = "27.0.12077973"
+            }
+            if (androidExt.hasProperty("compileOptions")) {
+                androidExt.compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+            if (androidExt.hasProperty("kotlinOptions")) {
+                androidExt.kotlinOptions {
+                    jvmTarget = "17"
+                }
+            }
+        }
+    }
+}
+// Align Java/Kotlin JVM targets across app + plugins (avoids compileDebugKotlin vs javac mismatch).
+subprojects { subproject ->
+    subproject.plugins.withId('com.android.library') {
+        subproject.android {
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+        }
+    }
+    subproject.plugins.withId('com.android.application') {
+        subproject.android {
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+        }
+    }
+    subproject.tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        options.compilerArgs.removeAll { it == '-Werror' }
+        ['-Xlint:-options', '-Xlint:-deprecation', '-Xlint:-unchecked'].each { flag ->
+            if (!options.compilerArgs.contains(flag)) {
+                options.compilerArgs << flag
+            }
+        }
+    }
+    subproject.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+        incremental = false
+    }
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

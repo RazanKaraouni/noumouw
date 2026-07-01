@@ -1,0 +1,90 @@
+# --- Secrets & local env (never commit) ---
+.env
+.env.*
+!.env.example
+!**/.env.example
+!**/*.env.example
+website/backend/.env
+website/frontend/.env
+noumow_app/assets/app.env
+mobile/assets/app.env
+**/*.env
+!**/*.env.example
+
+# Firebase / Google service account keys
+website/backend/secrets/
+**/secrets/
+*firebase-adminsdk*.json
+*-firebase-adminsdk-*.json
+*.pem
+*.p12
+credentials.json
+
+# Local screening report exports (PII — never commit)
+website/backend/reports/
+
+# Local Flutter compile-time defines (use dart_defines.example.json)
+noumow_app/dart_defines.json
+
+# --- Node.js ---
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Frontend build output ---
+website/frontend/dist/
+website/frontend/dist-ssr/
+*.local
+
+# --- Flutter / Dart ---
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+noumow_app/build/
+**/build/
+!website/backend/sql/
+!**/build.gradle
+!**/build.gradle.kts
+
+# Symbolication / obfuscation
+app.*.symbols
+app.*.map.json
+
+# Android Studio artifacts
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# --- IDE & OS ---
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.swp
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- Misc ---
+*.class
+*.log
+*.pyc
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
