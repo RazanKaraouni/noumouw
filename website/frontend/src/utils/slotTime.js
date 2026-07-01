@@ -10,7 +10,9 @@ export const SLOT_END_BEFORE_START_MESSAGE = 'End time must be after start time.
 export const SLOT_TIME_CONFLICT_MESSAGE =
   'A slot on this date already uses that start or end time. Choose a different time.';
 export const SLOT_DATE_NOT_ALLOWED_MESSAGE =
-  'Availability cannot be scheduled for a past date. Choose today or a future date.';
+  'Availability cannot be scheduled for a past date.';
+export const SLOT_DATE_TODAY_NOT_ALLOWED_MESSAGE =
+  'Add slots from tomorrow onward. You cannot add availability for today.';
 export const SLOT_DATE_MAX_YEARS_AHEAD = 2;
 
 export const MEETING_EARLY_START_MINUTES = 10;
@@ -187,11 +189,16 @@ export function validateSlotDate(slotDate, reference = new Date()) {
     return { ok: false, message: SLOT_DATE_NOT_ALLOWED_MESSAGE };
   }
 
+  if (dateStr === now.date) {
+    return { ok: false, message: SLOT_DATE_TODAY_NOT_ALLOWED_MESSAGE };
+  }
+
   return { ok: true, dateStr };
 }
 
 export function minSlotDateInputValue(reference = new Date()) {
-  return getNowWallClockInAppTz(reference).date;
+  const today = getNowWallClockInAppTz(reference).date;
+  return addDaysToDateString(today, 1);
 }
 
 export function maxSlotDateInputValue(reference = new Date()) {

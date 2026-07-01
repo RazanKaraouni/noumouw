@@ -10,7 +10,7 @@ import {
   validateSlotAgainstExisting,
   minSlotDateInputValue,
   maxSlotDateInputValue,
-  SLOT_DATE_NOT_ALLOWED_MESSAGE,
+  SLOT_DATE_TODAY_NOT_ALLOWED_MESSAGE,
 } from '../../utils/slotTime.js';
 
 const label = {
@@ -166,7 +166,7 @@ export default function TherapistAvailabilityPanel({ embedded = false, onSlotsCh
     const dateVal = String(slotDate || dateInputRef.current?.value || '').trim();
     if (!dateVal) {
       if (dateInputRef.current?.validity?.rangeUnderflow) {
-        setError(SLOT_DATE_NOT_ALLOWED_MESSAGE);
+        setError(SLOT_DATE_TODAY_NOT_ALLOWED_MESSAGE);
       } else {
         setError('Choose a date.');
       }

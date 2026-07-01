@@ -95,11 +95,14 @@ export const SLOT_TIME_CONFLICT_MESSAGE =
   'A slot on this date already uses that start or end time. Choose a different time.';
 
 export const SLOT_DATE_NOT_ALLOWED_MESSAGE =
-  'Availability cannot be scheduled for a past date. Choose today or a future date.';
+  'Availability cannot be scheduled for a past date.';
+
+export const SLOT_DATE_TODAY_NOT_ALLOWED_MESSAGE =
+  'Add slots from tomorrow onward. You cannot add availability for today.';
 
 export const SLOT_DATE_MAX_YEARS_AHEAD = 2;
 
-/** Validate YYYY-MM-DD: real calendar date, sane year, strictly after today (app TZ). */
+/** Validate YYYY-MM-DD: real calendar date, sane year, tomorrow or later (app TZ). */
 export function validateSlotDate(slotDate, reference = new Date()) {
   const dateStr = String(slotDate || '').trim().slice(0, 10);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
@@ -131,11 +134,16 @@ export function validateSlotDate(slotDate, reference = new Date()) {
     return { ok: false, message: SLOT_DATE_NOT_ALLOWED_MESSAGE };
   }
 
+  if (dateStr === now.date) {
+    return { ok: false, message: SLOT_DATE_TODAY_NOT_ALLOWED_MESSAGE };
+  }
+
   return { ok: true, dateStr };
 }
 
 export function minSlotDateInputValue(reference = new Date()) {
-  return getNowWallClockInAppTz(reference).date;
+  const today = getNowWallClockInAppTz(reference).date;
+  return addDaysToDateString(today, 1);
 }
 
 export function maxSlotDateInputValue(reference = new Date()) {

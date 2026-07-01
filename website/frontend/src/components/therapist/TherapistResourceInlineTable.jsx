@@ -143,6 +143,7 @@ function resourceMatchesMediaFilter(resource, mediaFilter) {
  */
 export default function TherapistResourceInlineTable({ refreshKey = 0 }) {
   const [resources, setResources] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [domainFilter, setDomainFilter] = useState('');
@@ -163,7 +164,11 @@ export default function TherapistResourceInlineTable({ refreshKey = 0 }) {
 
   const loadResources = async () => {
     const token = window.sessionStorage.getItem('noumouw_token');
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/resources`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -177,6 +182,8 @@ export default function TherapistResourceInlineTable({ refreshKey = 0 }) {
       }
     } catch {
       setLoadError('Network error.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -392,7 +399,11 @@ export default function TherapistResourceInlineTable({ refreshKey = 0 }) {
       )}
 
       <div style={{ overflow: 'auto', flex: 1, minHeight: 120 }}>
-        {resources.length === 0 ? (
+        {loading ? (
+          <p style={{ color: 'var(--muted)', fontSize: 13, textAlign: 'center', padding: 40 }}>
+            Loading...
+          </p>
+        ) : resources.length === 0 ? (
           <p style={{ color: 'var(--muted)', fontSize: 13 }}>Nothing uploaded yet.</p>
         ) : filteredResources.length === 0 ? (
           <p style={{ color: 'var(--muted)', fontSize: 13 }}>No resources match your search or filters.</p>
