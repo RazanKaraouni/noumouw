@@ -38,10 +38,10 @@
     "rate-limit-redis": "^5.0.0",
     "resend": "^4.8.0",
     "socket.io": "^4.8.3",
-    "tesseract.js": "^7.0.0"
+    "tesseract.js": "^7.0.0",
+    "@sentry/node": "^10.58.0"
   },
   "devDependencies": {
-    "@sentry/node": "^10.58.0",
     "supertest": "^7.2.2"
   }
 }
