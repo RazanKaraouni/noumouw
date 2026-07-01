@@ -9,7 +9,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 function loadServiceAccount() {
   const inline = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim();
   if (inline) {
-    return JSON.parse(inline);
+    try {
+      return JSON.parse(inline);
+    } catch (err) {
+      console.error(
+        '[firebase-admin] FIREBASE_SERVICE_ACCOUNT_JSON is invalid JSON:',
+        err?.message || err,
+      );
+      return null;
+    }
   }
 
   const configuredPath =
@@ -20,7 +28,22 @@ function loadServiceAccount() {
     const resolved = path.isAbsolute(configuredPath)
       ? configuredPath
       : path.resolve(__dirname, '..', configuredPath);
-    return JSON.parse(fs.readFileSync(resolved, 'utf8'));
+    if (!fs.existsSync(resolved)) {
+      console.warn(
+        `[firebase-admin] Service account file not found: ${resolved}. ` +
+          'On Render, set FIREBASE_SERVICE_ACCOUNT_JSON (and remove FIREBASE_SERVICE_ACCOUNT_PATH).',
+      );
+      return null;
+    }
+    try {
+      return JSON.parse(fs.readFileSync(resolved, 'utf8'));
+    } catch (err) {
+      console.error(
+        '[firebase-admin] Failed to read service account file:',
+        err?.message || err,
+      );
+      return null;
+    }
   }
 
   return null;
