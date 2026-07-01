@@ -2044,6 +2044,19 @@ input, select, textarea {
 }
 
 /* Login */
+.page-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--font);
+}
+.page-loading__text {
+  font-size: 14px;
+}
+
 .login-page {
   min-height: 100vh;
   display: flex;

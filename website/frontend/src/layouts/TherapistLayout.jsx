@@ -5,6 +5,7 @@ import TherapistSidebar from '../components/therapist/TherapistSidebar';
 import NotificationBell from '../components/therapist/NotificationBell';
 import ChatUnreadBadge from '../components/therapist/ChatUnreadBadge';
 import DashboardShell from '../components/layout/DashboardShell.jsx';
+import PageLoading from '../components/layout/PageLoading.jsx';
 
 function TherapistLayoutContent() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function TherapistLayoutContent() {
 export default function TherapistLayout() {
   const { therapist, loading } = useAuth();
 
-  if (loading) return null;
+  if (loading) return <PageLoading />;
   if (!therapist) return <Navigate to="/login" replace />;
 
   return (

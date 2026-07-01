@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
+import PageLoading from './components/layout/PageLoading.jsx';
 
 import AdminLayout from './layouts/AdminLayout';
 import TherapistLayout from './layouts/TherapistLayout';
@@ -44,7 +45,7 @@ function LegacyTherapistChildRedirect() {
 export default function App() {
   const { user, role, loading } = useContext(AuthContext);
 
-  if (loading) return null;
+  if (loading) return <PageLoading />;
 
   if (!user) {
     return (
